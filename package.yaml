@@ -1,0 +1,44 @@
+name:                stack-atcoder
+version:             0.1.0.0
+github:              "shin-sakata/stack-atcoder"
+license:             BSD3
+author:              "Shintaro Sakata"
+maintainer:          "shintaro.sakata.tokyo@gmail.com"
+copyright:           "2020 Shintaro Sakata"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+description:         Please see the README on GitHub at <https://github.com/shin-sakata/stack-atcoder#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- utf8-conversions
+- req
+- scalpel
+
+library:
+  source-dirs: src
+
+executables:
+  stack-atcoder-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - stack-atcoder
+
+tests:
+  stack-atcoder-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - stack-atcoder
