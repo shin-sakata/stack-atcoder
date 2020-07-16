@@ -1,0 +1,71 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: b2b3c53804f54556ba05c70017822b518cd72f2f5a9f6ec9f68c2a3b0f2cb279
+
+name:           stack-atcoder
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/shin-sakata/stack-atcoder#readme>
+homepage:       https://github.com/shin-sakata/stack-atcoder#readme
+bug-reports:    https://github.com/shin-sakata/stack-atcoder/issues
+author:         Shintaro Sakata
+maintainer:     shintaro.sakata.tokyo@gmail.com
+copyright:      2020 Shintaro Sakata
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/shin-sakata/stack-atcoder
+
+library
+  exposed-modules:
+      AtCoder
+  other-modules:
+      Paths_stack_atcoder
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , req
+    , scalpel
+    , utf8-conversions
+  default-language: Haskell2010
+
+executable stack-atcoder-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_stack_atcoder
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , req
+    , scalpel
+    , stack-atcoder
+    , utf8-conversions
+  default-language: Haskell2010
+
+test-suite stack-atcoder-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_stack_atcoder
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , req
+    , scalpel
+    , stack-atcoder
+    , utf8-conversions
+  default-language: Haskell2010
