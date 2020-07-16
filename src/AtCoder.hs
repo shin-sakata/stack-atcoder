@@ -3,7 +3,9 @@
 
 module AtCoder where
 
-import           Text.HTML.Scalpel as Scalpel
+import           Text.HTML.Scalpel (AttributeName (..), AttributePredicate,
+                                    Selector, TagName (..), URL, (@:), (@=))
+import qualified Text.HTML.Scalpel as Scalpel
 
 -- AtCoder endpoint
 endpoint :: Scalpel.URL
@@ -12,7 +14,7 @@ endpoint = "https://atcoder.jp"
 -- AtCoderのLoginページからCsrfTokenを取得する
 getCsrfToken :: IO (Maybe String)
 getCsrfToken = do
-  scrapeURL endpoint $ attr "value" selector
+  Scalpel.scrapeURL endpoint $ Scalpel.attr "value" selector
   where
     url :: URL
     url = endpoint ++ "/login"
@@ -27,4 +29,4 @@ getCsrfToken = do
 
     predicates :: [AttributePredicate]
     predicates =
-      [ AttributeString "name" @= "csrf_token" ]
+      [AttributeString "name" @= "csrf_token"]
