@@ -22,6 +22,7 @@ login :: UserName -> Password -> IO (Either Text Text)
 login userName password = do
   document <- HttpClient.get Nothing loginEndpoint
   let csrfToken = Scrape.getCsrfToken document
+  -- TODO
   print csrfToken
   return $ Right ""
     where
