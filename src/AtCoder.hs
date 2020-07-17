@@ -1,32 +1,29 @@
-{-# LANGUAGE OverloadedStrings   #-}
-{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module AtCoder where
 
-import           Text.HTML.Scalpel (AttributeName (..), AttributePredicate,
-                                    Selector, TagName (..), URL, (@:), (@=))
-import qualified Text.HTML.Scalpel as Scalpel
+import           Data.Convertible.Utf8.Internal (Text)
+import           HttpClient                     (Form)
+import qualified HttpClient
+import           Network.HTTP.Req               (Scheme (Https), Url, https,
+                                                 (/:))
+import qualified Scrape
 
 -- AtCoder endpoint
-endpoint :: Scalpel.URL
-endpoint = "https://atcoder.jp"
+endpoint :: Url 'Https
+endpoint = https "atcoder.jp"
 
--- AtCoderのLoginページからCsrfTokenを取得する
-getCsrfToken :: IO (Maybe String)
-getCsrfToken = do
-  Scalpel.scrapeURL endpoint $ Scalpel.attr "value" selector
-  where
-    url :: URL
-    url = endpoint ++ "/login"
+type UserName = Text
 
-    selector :: Selector
-    selector =
-      tag @: predicates
+type Password = Text
 
-    tag :: TagName
-    tag =
-      TagString "input"
-
-    predicates :: [AttributePredicate]
-    predicates =
-      [AttributeString "name" @= "csrf_token"]
+login :: UserName -> Password -> IO (Either Text Text)
+login userName password = do
+  document <- HttpClient.get Nothing loginEndpoint
+  let csrfToken = Scrape.getCsrfToken document
+  print csrfToken
+  return $ Right ""
+    where
+      loginEndpoint :: Url 'Https
+      loginEndpoint = endpoint /: "login"

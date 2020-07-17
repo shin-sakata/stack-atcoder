@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f79595ed8f9d34ebea034105fcf14c266c5486c35c170f82b2230947e3a75757
+-- hash: 4924f0264318bf054c7779343f33c6adbb4f0050fe4a83d53b316f28a9cd999e
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -28,13 +28,17 @@ source-repository head
 library
   exposed-modules:
       AtCoder
+      HttpClient
+      Scrape
   other-modules:
       Paths_stack_atcoder
   hs-source-dirs:
       src
   build-depends:
       base >=4.7 && <5
+    , http-client
     , req
+    , safe-exceptions
     , scalpel
     , utf8-conversions
   default-language: Haskell2010
@@ -48,7 +52,9 @@ executable stack-atcoder-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , http-client
     , req
+    , safe-exceptions
     , scalpel
     , stack-atcoder
     , utf8-conversions
@@ -66,7 +72,9 @@ test-suite stack-atcoder-test
   build-depends:
       base >=4.7 && <5
     , hspec
+    , http-client
     , req
+    , safe-exceptions
     , scalpel
     , stack-atcoder
     , utf8-conversions

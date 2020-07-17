@@ -1,6 +1,10 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
 import AtCoder
 
 main :: IO ()
-main = getCsrfToken >>= print
+main = do
+  login "" ""
+  pure ()
