@@ -13,8 +13,8 @@ login = do
   password <- getPassword
   result <- runExceptT $ AtCoder.login username password
   case result of
-    Right _ -> print "Login Success!!"
-    Left e  -> print e
+    Right _ -> putStrLn "Login Success!!"
+    Left e  -> putStrLn (convert e)
 
 getPassword :: IO Text
 getPassword = do
