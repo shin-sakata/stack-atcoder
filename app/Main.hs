@@ -2,9 +2,37 @@
 
 module Main where
 
-import AtCoder
+import qualified AtCoder
+import Control.Monad.Except (runExceptT)
+import System.IO (stdin, hSetEcho, hFlush, stdout)
+import Data.Convertible.Utf8.Internal (Text)
+import Data.Convertible.Utf8 (convert)
 
 main :: IO ()
 main = do
-  login "" ""
-  pure ()
+  login
+
+login :: IO ()
+login = do
+  username <- getUsername
+  password <- getPassword
+  result <- runExceptT $ AtCoder.login username password
+  case result of
+    Right _ -> print "Login Success!!"
+    Left e -> print e
+
+getPassword :: IO Text
+getPassword = do
+  putStr "Enter your password : "
+  hFlush stdout
+  hSetEcho stdin False
+  password <- getLine
+  hSetEcho stdin True
+  putStrLn "<Masked password>"
+  return $ convert password
+
+getUsername :: IO Text
+getUsername = do
+  putStr "Enter your username : "
+  hFlush stdout
+  convert <$> getLine

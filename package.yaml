@@ -18,7 +18,9 @@ dependencies:
 - req
 - scalpel
 - http-client
-- safe-exceptions
+- mtl
+- either
+- text
 
 library:
   source-dirs: src

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4924f0264318bf054c7779343f33c6adbb4f0050fe4a83d53b316f28a9cd999e
+-- hash: 4adfbba809129982c6f87499131bd65f297fa901066adb1839ace8b64a7cb2c3
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -36,10 +36,12 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , either
     , http-client
+    , mtl
     , req
-    , safe-exceptions
     , scalpel
+    , text
     , utf8-conversions
   default-language: Haskell2010
 
@@ -52,11 +54,13 @@ executable stack-atcoder-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , either
     , http-client
+    , mtl
     , req
-    , safe-exceptions
     , scalpel
     , stack-atcoder
+    , text
     , utf8-conversions
   default-language: Haskell2010
 
@@ -71,11 +75,13 @@ test-suite stack-atcoder-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
+    , either
     , hspec
     , http-client
+    , mtl
     , req
-    , safe-exceptions
     , scalpel
     , stack-atcoder
+    , text
     , utf8-conversions
   default-language: Haskell2010
