@@ -20,7 +20,7 @@ dependencies:
 - http-client
 - mtl
 - either
-- text
+- optparse-applicative
 
 library:
   source-dirs: src
