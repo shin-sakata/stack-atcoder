@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Scrape (getCsrfToken, hasSuccess) where
+module AtCoder.Scrape (getCsrfToken, hasSuccess) where
 
 import           Data.Convertible.Utf8.Internal (Text)
 import           Data.Maybe                     (isJust)
@@ -8,7 +8,6 @@ import           Text.HTML.Scalpel              (AttributeName (..),
                                                  AttributePredicate, Selector,
                                                  TagName (..), URL, (@:), (@=))
 import qualified Text.HTML.Scalpel              as Scalpel
-import Debug.Trace
 
 type Html = Text
 

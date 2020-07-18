@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f1ca3add68cfdbd9646f884e6d3cb6566d2a5b6f151bbb65a580f9b81b72f7f1
+-- hash: 1b05a3dca8188036f1176807a60de011e0f7ac6101c2d423628e609cecad5962
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -28,9 +28,10 @@ source-repository head
 library
   exposed-modules:
       AtCoder
+      AtCoder.HttpClient
+      AtCoder.Scrape
       Cli
-      HttpClient
-      Scrape
+      Cli.Login
   other-modules:
       Paths_stack_atcoder
   hs-source-dirs:

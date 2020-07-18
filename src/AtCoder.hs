@@ -7,7 +7,7 @@ import Control.Monad.Except
 import Data.Convertible.Utf8 (convert)
 import Data.Convertible.Utf8.Internal (Text)
 import Data.Either.Combinators (maybeToRight)
-import qualified HttpClient
+import qualified AtCoder.HttpClient as HttpClient
 import Network.HTTP.Req
   ( ReqBodyUrlEnc (..),
     Scheme (Https),
@@ -16,7 +16,7 @@ import Network.HTTP.Req
     (/:),
     (=:),
   )
-import qualified Scrape
+import qualified AtCoder.Scrape as Scrape
 
 -- AtCoder endpoint
 endpoint :: Url 'Https

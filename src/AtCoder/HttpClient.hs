@@ -1,7 +1,7 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module HttpClient (get, postForm, writeCookie) where
+module AtCoder.HttpClient (get, postForm, writeCookie) where
 
 import Control.Monad.IO.Class (liftIO)
 import Data.Convertible.Utf8 (convert)
