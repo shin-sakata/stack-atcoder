@@ -21,6 +21,7 @@ dependencies:
 - mtl
 - either
 - optparse-applicative
+- turtle
 
 library:
   source-dirs: src
