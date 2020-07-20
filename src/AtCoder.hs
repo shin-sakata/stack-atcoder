@@ -5,6 +5,7 @@ module AtCoder
   ( login,
     Result,
     submit,
+    clearSession,
   )
 where
 
@@ -36,7 +37,7 @@ type Password = Text
 -- Login
 login :: UserName -> Password -> Result ()
 login userName password = do
-  logout
+  clearSession
   document <-
     liftIO $
       HttpClient.get
@@ -55,16 +56,17 @@ login userName password = do
 
   res <- liftIO $ HttpClient.postForm loginEndpoint form
 
+  -- TODO サクセス以外は全てusernameとpasswordが違うというエラーを吐いているので修正すべき
   if Scrape.hasSuccess res
     then return ()
-    else throwError "Login failed"
+    else throwError "Username or Password is incorrect."
   where
     loginEndpoint :: Url 'Https
     loginEndpoint = endpoint /: "login"
 
 -- Logout
-logout :: Result ()
-logout = liftIO $ HttpClient.writeCookie mempty
+clearSession :: Result ()
+clearSession = liftIO $ HttpClient.writeCookie mempty
 
 -- Submit
 type ContestId = Text

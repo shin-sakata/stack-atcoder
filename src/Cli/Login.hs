@@ -14,7 +14,7 @@ login = do
   result <- runExceptT $ AtCoder.login username password
   case result of
     Right _ -> putStrLn "Login Success!!"
-    Left e  -> putStrLn (convert e)
+    Left e  -> putStrLn ("Error: Login failed: " <> convert e)
 
 getPassword :: IO Text
 getPassword = do
