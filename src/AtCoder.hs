@@ -11,7 +11,8 @@ where
 
 import qualified AtCoder.HttpClient as HttpClient
 import qualified AtCoder.Scrape as Scrape
-import Control.Monad.Except
+import Cli.Result
+import Control.Monad.IO.Class (liftIO)
 import Data.Convertible.Utf8 (convert)
 import Data.Convertible.Utf8.Internal (Text)
 import Data.Either.Combinators (maybeToRight)
@@ -23,8 +24,6 @@ import Network.HTTP.Req
     (/:),
     (=:),
   )
-
-type Result a = ExceptT Text IO a
 
 -- AtCoder endpoint
 endpoint :: Url 'Https
@@ -70,7 +69,9 @@ clearSession = liftIO $ HttpClient.writeCookie mempty
 
 -- Submit
 type ContestId = Text
+
 type TaskId = Text
+
 type SourceCode = Text
 
 haskellLanguageId :: Text
@@ -84,24 +85,19 @@ submit contestId taskId sourceCode = do
     liftIO $
       HttpClient.get
         contestUrl
-  
+
   csrfToken <-
     maybeToResult
       (Scrape.getCsrfToken document)
       ("cannot find csrf_token. URL: " <> convert (show contestUrl))
-  
+
   let form =
         ReqBodyUrlEnc $
           ("data.TaskScreenName" =: taskScreenName)
             <> ("data.LanguageId" =: haskellLanguageId)
             <> ("sourceCode" =: sourceCode)
             <> ("csrf_token" =: csrfToken)
-  
+
   let submitUrl = endpoint /: "contests" /: contestId /: "submit"
-  void $ liftIO $ HttpClient.postForm submitUrl form
-
-maybeToResult :: Maybe a -> Text -> Result a
-maybeToResult maybe text = ExceptT $ pure $ maybeToRight text maybe
-
-eitherToResult :: Either Text a -> Result a
-eitherToResult = ExceptT . pure
+  liftIO $ HttpClient.postForm submitUrl form
+  pure ()

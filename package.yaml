@@ -25,6 +25,8 @@ dependencies:
 - directory
 - filepath
 - text
+- shakespeare
+- yaml
 
 library:
   source-dirs: src

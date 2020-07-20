@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f973602d33e3cf146af0183c45c61209e56b2da69d4f43e6af041ec53443854e
+-- hash: 2bca3f77d6ee00e84219c17c758d696f5afdd95870b3b7dc09f2288935b0f22a
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -34,7 +34,6 @@ library
       Cli.ClearSession
       Cli.Login
       Cli.New
-      Cli.Settings
       Cli.Submit
       Settings
   other-modules:
@@ -51,9 +50,11 @@ library
     , optparse-applicative
     , req
     , scalpel
+    , shakespeare
     , text
     , turtle
     , utf8-conversions
+    , yaml
   default-language: Haskell2010
 
 executable stack-atcoder-exe
@@ -73,10 +74,12 @@ executable stack-atcoder-exe
     , optparse-applicative
     , req
     , scalpel
+    , shakespeare
     , stack-atcoder
     , text
     , turtle
     , utf8-conversions
+    , yaml
   default-language: Haskell2010
 
 test-suite stack-atcoder-test
@@ -99,8 +102,10 @@ test-suite stack-atcoder-test
     , optparse-applicative
     , req
     , scalpel
+    , shakespeare
     , stack-atcoder
     , text
     , turtle
     , utf8-conversions
+    , yaml
   default-language: Haskell2010
