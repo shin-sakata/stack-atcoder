@@ -1,13 +1,19 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module AtCoder where
+module AtCoder
+  ( login,
+    Result,
+    submit,
+  )
+where
 
+import qualified AtCoder.HttpClient as HttpClient
+import qualified AtCoder.Scrape as Scrape
 import Control.Monad.Except
 import Data.Convertible.Utf8 (convert)
 import Data.Convertible.Utf8.Internal (Text)
 import Data.Either.Combinators (maybeToRight)
-import qualified AtCoder.HttpClient as HttpClient
 import Network.HTTP.Req
   ( ReqBodyUrlEnc (..),
     Scheme (Https),
@@ -16,7 +22,8 @@ import Network.HTTP.Req
     (/:),
     (=:),
   )
-import qualified AtCoder.Scrape as Scrape
+
+type Result a = ExceptT Text IO a
 
 -- AtCoder endpoint
 endpoint :: Url 'Https
@@ -26,6 +33,7 @@ type UserName = Text
 
 type Password = Text
 
+-- Login
 login :: UserName -> Password -> Result ()
 login userName password = do
   logout
@@ -54,10 +62,41 @@ login userName password = do
     loginEndpoint :: Url 'Https
     loginEndpoint = endpoint /: "login"
 
+-- Logout
 logout :: Result ()
 logout = liftIO $ HttpClient.writeCookie mempty
 
-type Result a = ExceptT Text IO a
+-- Submit
+type ContestId = Text
+type TaskId = Text
+type SourceCode = Text
+
+haskellLanguageId :: Text
+haskellLanguageId = "4027"
+
+submit :: ContestId -> TaskId -> SourceCode -> Result ()
+submit contestId taskId sourceCode = do
+  let taskScreenName = contestId <> "_" <> taskId
+  let contestUrl = endpoint /: "contests" /: contestId /: "tasks" /: taskScreenName
+  document <-
+    liftIO $
+      HttpClient.get
+        contestUrl
+  
+  csrfToken <-
+    maybeToResult
+      (Scrape.getCsrfToken document)
+      ("cannot find csrf_token. URL: " <> convert (show contestUrl))
+  
+  let form =
+        ReqBodyUrlEnc $
+          ("data.TaskScreenName" =: taskScreenName)
+            <> ("data.LanguageId" =: haskellLanguageId)
+            <> ("sourceCode" =: sourceCode)
+            <> ("csrf_token" =: csrfToken)
+  
+  let submitUrl = endpoint /: "contests" /: contestId /: "submit"
+  void $ liftIO $ HttpClient.postForm submitUrl form
 
 maybeToResult :: Maybe a -> Text -> Result a
 maybeToResult maybe text = ExceptT $ pure $ maybeToRight text maybe

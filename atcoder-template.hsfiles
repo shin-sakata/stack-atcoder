@@ -5,36 +5,87 @@ version:             0.1.0.0
 dependencies:
 - base >= 4.7 && < 5
 
-library:
-  source-dirs: src
-
-tests:
-  {{name}}-test:
-    main:                Spec.hs
-    source-dirs:         test
+executables:
+  a:
+    main:                Main.hs
+    source-dirs:         a
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - {{name}}
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+  b:
+    main:                Main.hs
+    source-dirs:         b
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+  c:
+    main:                Main.hs
+    source-dirs:         c
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+  d:
+    main:                Main.hs
+    source-dirs:         d
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+  e:
+    main:                Main.hs
+    source-dirs:         e
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+  f:
+    main:                Main.hs
+    source-dirs:         f
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
 
-{-# START_FILE Setup.hs #-}
-import Distribution.Simple
-main = defaultMain
+{-# START_FILE stack.yaml #-}
+resolver: ghc-8.8.3
+packages:
+- .
 
-{-# START_FILE test/Spec.hs #-}
-main :: IO ()
-main = putStrLn "Test suite not yet implemented"
-
-{-# START_FILE src/Lib.hs #-}
-module Lib
-    ( main
-    ) where
+{-# START_FILE a/Main.hs #-}
+module Main where
 
 main :: IO ()
 main = putStrLn "hello atcoder"
 
-{-# START_FILE .gitignore #-}
-.stack-work/
-*~
+{-# START_FILE b/Main.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "hello atcoder"
+
+{-# START_FILE c/Main.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "hello atcoder"
+
+{-# START_FILE d/Main.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "hello atcoder"
+
+{-# START_FILE e/Main.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "hello atcoder"
+
+{-# START_FILE f/Main.hs #-}
+module Main where
+
+main :: IO ()
+main = putStrLn "hello atcoder"

@@ -22,6 +22,8 @@ dependencies:
 - either
 - optparse-applicative
 - turtle
+- directory
+- text
 
 library:
   source-dirs: src
