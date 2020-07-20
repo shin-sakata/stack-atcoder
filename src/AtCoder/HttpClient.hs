@@ -21,6 +21,9 @@ import Network.HTTP.Req
   )
 import qualified Network.HTTP.Req as Req
 import Text.Read (readMaybe)
+import Turtle (shell, empty)
+import Settings (getSettingsDir)
+import System.FilePath ((</>))
 
 type Form = [(Text, Text)]
 
@@ -76,22 +79,37 @@ reqWithSession method url body responseType option = do
   liftIO $ writeCookie (Req.responseCookieJar r)
   return r
 
-cookiePath :: FilePath
-cookiePath = "~/.stack-atcoder/cookie"
+getCookiePath :: IO FilePath
+getCookiePath = do
+  settingsDir <- getSettingsDir
+  pure (settingsDir </> "cookie")
+
+initCookie :: IO ()
+initCookie = do
+  settingsDir <- getSettingsDir
+  cookiePath <- getCookiePath
+  shell ("mkdir -p " <> convert settingsDir)  empty
+  shell ("touch " <> convert cookiePath) empty
+  pure ()
 
 -- cookieをcookiePathから読み込む
 readCookie :: IO CookieJar
-readCookie = readCookieWithPath cookiePath
+readCookie = do
+  cookiePath <- getCookiePath
+  initCookie
+  readCookieWithPath cookiePath
 
 -- cookieをcookiePathに書き込む
 writeCookie :: CookieJar -> IO ()
-writeCookie = writeCookieWithPath cookiePath
+writeCookie cookie = do
+  cookiePath <- getCookiePath
+  initCookie
+  writeCookieWithPath cookiePath cookie
 
 -- cookieを読み込む
 -- readに失敗したらcookieのmemptyを返す
 readCookieWithPath :: FilePath -> IO CookieJar
 readCookieWithPath path = do
-  appendFile path mempty
   cookie <- readMaybe <$> readFile path
   pure (fromMaybe mempty cookie)
 

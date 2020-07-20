@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 25fa5dea7d85c1543fd626fae2e1cf9083f510e2d4f593d3ca438336be32f242
+-- hash: f973602d33e3cf146af0183c45c61209e56b2da69d4f43e6af041ec53443854e
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -36,6 +36,7 @@ library
       Cli.New
       Cli.Settings
       Cli.Submit
+      Settings
   other-modules:
       Paths_stack_atcoder
   hs-source-dirs:
@@ -44,6 +45,7 @@ library
       base >=4.7 && <5
     , directory
     , either
+    , filepath
     , http-client
     , mtl
     , optparse-applicative
@@ -65,6 +67,7 @@ executable stack-atcoder-exe
       base >=4.7 && <5
     , directory
     , either
+    , filepath
     , http-client
     , mtl
     , optparse-applicative
@@ -89,6 +92,7 @@ test-suite stack-atcoder-test
       base >=4.7 && <5
     , directory
     , either
+    , filepath
     , hspec
     , http-client
     , mtl

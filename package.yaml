@@ -23,6 +23,7 @@ dependencies:
 - optparse-applicative
 - turtle
 - directory
+- filepath
 - text
 
 library:
