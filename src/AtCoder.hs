@@ -12,7 +12,6 @@ where
 import qualified AtCoder.HttpClient as HttpClient
 import qualified AtCoder.Scrape as Scrape
 import Cli.Result
-import Control.Monad.IO.Class (liftIO)
 import Data.Convertible.Utf8 (convert)
 import Data.Convertible.Utf8.Internal (Text)
 import Data.Either.Combinators (maybeToRight)
@@ -57,7 +56,7 @@ login userName password = do
 
   -- TODO サクセス以外は全てusernameとpasswordが違うというエラーを吐いているので修正すべき
   if Scrape.hasSuccess res
-    then return ()
+    then liftIO $ putStrLn "Login Success!!"
     else throwError "Username or Password is incorrect."
   where
     loginEndpoint :: Url 'Https

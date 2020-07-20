@@ -3,9 +3,10 @@
 module Cli.New where
 
 import Data.Convertible.Utf8 (convert)
-import Turtle
+import Turtle (shell, empty)
 import qualified Settings
 import Cli.Result
+import Data.Text (Text)
 
 resolver :: Text
 resolver = " " <> "--resolver ghc-8.8.3"

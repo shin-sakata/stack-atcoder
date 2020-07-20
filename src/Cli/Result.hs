@@ -1,8 +1,9 @@
 module Cli.Result where
 
-import qualified Control.Monad.Except as E
-import Data.Text as T
-import Data.Either.Combinators (maybeToRight)
+import qualified Control.Monad.Except    as E
+import           Control.Monad.IO.Class  (MonadIO)
+import           Data.Either.Combinators (maybeToRight)
+import           Data.Text               as T
 
 type Result a = E.ExceptT T.Text IO a
 
@@ -17,3 +18,6 @@ maybeToResult maybe text = E.ExceptT $ pure $ maybeToRight text maybe
 
 eitherToResult :: Either Text a -> Result a
 eitherToResult = E.ExceptT . pure
+
+liftIO :: MonadIO m => IO a -> m a
+liftIO = E.liftIO

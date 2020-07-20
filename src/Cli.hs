@@ -1,10 +1,13 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Cli where
 
+import qualified Cli.ClearSession               as ClearSession
 import qualified Cli.Login                      as Login
 import qualified Cli.New                        as New
+import           Cli.Result
 import qualified Cli.Submit                     as Submit
-import qualified Cli.ClearSession               as ClearSession
-import           Control.Monad.Except           (runExceptT)
+import           Data.Convertible.Utf8          (convert)
 import           Data.Convertible.Utf8.Internal (Text)
 import           Options.Applicative
 
@@ -45,10 +48,24 @@ usage :: String
 usage = "stack atcoder [--help] [COMMAND]"
 
 execCommand :: IO ()
-execCommand = execParser parseInfo >>= run
+execCommand = do
+  command <- execParser parseInfo
+  run command
   where
     run cmd = case cmd of
-      Login    -> Login.login
-      New name -> New.new name
-      Submit task -> Submit.submit task
-      ClearSession -> ClearSession.clearSession
+      Login        -> do
+        result <- runResult Login.login
+        handleErr result "Error: Login failed: "
+      New name     -> do 
+        result <- runResult (New.new name)
+        handleErr result "Error: Create project failed: "
+      Submit task  -> do
+        result <- runResult (Submit.submit task)
+        handleErr result "Error: Submit task failed: " 
+      ClearSession -> do
+        result <- runResult ClearSession.clearSession
+        handleErr result "Error: Clear session failed: "
+
+handleErr :: Either Text () -> Text -> IO ()
+handleErr (Right _) _ = pure ()
+handleErr (Left e) prefix = putStrLn $ convert (prefix <> e)

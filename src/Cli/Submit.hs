@@ -3,20 +3,17 @@
 module Cli.Submit where
 
 import qualified AtCoder
-import Control.Monad.Except (runExceptT)
 import Data.Convertible.Utf8 (convert)
 import qualified Data.Text as T
 import System.Directory as Dir
 import qualified Data.Text.IO as T
+import Cli.Result
 
-submit :: T.Text -> IO ()
+submit :: T.Text -> Result ()
 submit task = do
-  contest <- getCurrentContest
-  sourceCode <- getSourceCode task
-  result <- runExceptT $ AtCoder.submit contest task sourceCode
-  case result of
-    Right _ -> putStrLn "Submit Success!!"
-    Left e -> putStrLn (convert e)
+  contest <- liftIO getCurrentContest
+  sourceCode <- liftIO $ getSourceCode task
+  AtCoder.submit contest task sourceCode
 
 getCurrentContest :: IO T.Text
 getCurrentContest = do

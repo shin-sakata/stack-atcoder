@@ -7,14 +7,14 @@ import           Data.Convertible.Utf8.Internal (Text)
 import           Options.Applicative
 import           System.IO                      (hFlush, hSetEcho, stdin,
                                                  stdout)
-login :: IO ()
+
+import Cli.Result
+
+login :: Result ()
 login = do
-  username <- getUsername
-  password <- getPassword
-  result <- runExceptT $ AtCoder.login username password
-  case result of
-    Right _ -> putStrLn "Login Success!!"
-    Left e  -> putStrLn ("Error: Login failed: " <> convert e)
+  username <- liftIO getUsername
+  password <- liftIO getPassword
+  AtCoder.login username password
 
 getPassword :: IO Text
 getPassword = do
