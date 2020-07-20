@@ -18,7 +18,7 @@ login = do
 
 getPassword :: IO Text
 getPassword = do
-  putStr "Enter your password : "
+  putStr "Password: "
   hFlush stdout
   hSetEcho stdin False
   password <- getLine
@@ -28,6 +28,6 @@ getPassword = do
 
 getUsername :: IO Text
 getUsername = do
-  putStr "Enter your username : "
+  putStr "Username: "
   hFlush stdout
   convert <$> getLine

@@ -36,7 +36,7 @@ parseCommand =
     command "login" (parseLogin `withInfo` "Login to AtCoder")
       <> command "new" (parseNew `withInfo` "Create a new project for specified contest")
       <> command "submit" (parseSubmit `withInfo` "Submit solution")
-      <> command "clear-session" (parseSubmit `withInfo` "Clear session data (cookie store in HTTP client)")
+      <> command "clear-session" (parseClearSession `withInfo` "Clear session data (cookie store in HTTP client)")
 
 parseInfo :: ParserInfo Command
 parseInfo = parseCommand `withInfo` usage
