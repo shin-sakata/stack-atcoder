@@ -77,7 +77,7 @@ reqWithSession method url body responseType option = do
   return r
 
 cookiePath :: FilePath
-cookiePath = "./cookie"
+cookiePath = "~/.stack-atcoder/cookie"
 
 -- cookieをcookiePathから読み込む
 readCookie :: IO CookieJar
