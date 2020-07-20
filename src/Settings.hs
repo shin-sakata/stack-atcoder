@@ -2,20 +2,22 @@
 
 module Settings where
 
-import Data.Text (Text)
-import System.Directory (getHomeDirectory)
-import System.FilePath ((</>))
-import  qualified Data.Yaml as Yaml
-import GHC.Generics (Generic)
-import Control.Monad.IO.Class (MonadIO)
+import           Cli.Result
+import qualified Control.Monad.IO.Class (MonadIO)
+import           Data.Text              (Text)
+import qualified Data.Yaml              as Yaml
+import           GHC.Generics           (Generic)
+import           System.Directory       (getHomeDirectory)
+import           System.FilePath        ((</>))
 
 data Config = Config
   { dependencies :: [Text],
-    template :: Text
+    template     :: Text
   }
   deriving (Show, Generic)
 
 instance Yaml.ToJSON Config
+
 instance Yaml.FromJSON Config
 
 configFile :: FilePath
@@ -26,7 +28,7 @@ getSettingsDir = do
   home <- getHomeDirectory
   pure (home </> ".stack-atcoder")
 
-getConfig :: IO (Either Yaml.ParseException Config)
+getConfig :: Result Config
 getConfig = do
-  settingsDir <- getSettingsDir
-  Yaml.decodeFileEither (settingsDir </> configFile)
+  settingsDir <- liftIO getSettingsDir
+  Yaml.decodeFileThrow (settingsDir </> configFile)

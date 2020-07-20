@@ -1,7 +1,7 @@
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Settings.Template where
+module Settings.Template (atcoderTemplate) where
 
 import Data.Convertible.Utf8 (convert)
 import Data.Convertible.Utf8.Internal (LazyText, Text)
@@ -32,17 +32,16 @@ sourceTemplates config =
 atcoderTemplate :: Settings.Config -> Text
 atcoderTemplate config =
   convert
-    [stext|
-{-# START_FILE package.yaml #-}
+    [stext|{-# START_FILE package.yaml #-}
 name:                {{name}}
 version:             0.1.0.0
 
 dependencies:
 #{dependencies_}
 
-#{sourceTemplates_}
-
 #{rest}
+
+#{sourceTemplates_}
 |]
   where
     dependencies_ = dependencies config
@@ -94,7 +93,13 @@ executables:
       - -with-rtsopts=-N
 
 {-# START_FILE stack.yaml #-}
-resolver: ghc-8.8.3
+resolver: lts-15.7
 packages:
 - .
+extra-deps:
+- attoparsec-0.13.2.3
+- extra-1.7.1
+- lens-4.19.1
+- massiv-0.5.1.0
+- repa-3.4.1.4
 |]
