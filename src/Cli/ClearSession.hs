@@ -4,6 +4,6 @@ import qualified AtCoder
 import Data.Convertible.Utf8 (convert)
 import Cli.Result
 
-clearSession :: Result ()
+clearSession :: IO ()
 clearSession = do
   AtCoder.clearSession

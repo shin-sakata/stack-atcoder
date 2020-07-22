@@ -3,7 +3,7 @@
 module Settings where
 
 import           Cli.Result
-import qualified Control.Monad.IO.Class (MonadIO)
+import           Control.Monad.IO.Class (MonadIO, liftIO)
 import           Data.Text              (Text)
 import qualified Data.Yaml              as Yaml
 import           GHC.Generics           (Generic)
@@ -28,7 +28,7 @@ getSettingsDir = do
   home <- getHomeDirectory
   pure (home </> ".stack-atcoder")
 
-getConfig :: Result Config
+getConfig :: (MonadThrow m, MonadIO m) => m Config
 getConfig = do
   settingsDir <- liftIO getSettingsDir
   Yaml.decodeFileThrow (settingsDir </> configFile)

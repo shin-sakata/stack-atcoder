@@ -3,13 +3,14 @@
 module Cli.Submit where
 
 import qualified AtCoder
-import Data.Convertible.Utf8 (convert)
-import qualified Data.Text as T
-import System.Directory as Dir
-import qualified Data.Text.IO as T
-import Cli.Result
+import           Cli.Result
+import           Control.Monad.IO.Class (MonadIO, liftIO)
+import           Data.Convertible.Utf8  (convert)
+import qualified Data.Text              as T
+import qualified Data.Text.IO           as T
+import           System.Directory       as Dir
 
-submit :: T.Text -> Result ()
+submit :: (MonadThrow m, MonadIO m) => T.Text -> m ()
 submit task = do
   contest <- liftIO getCurrentContest
   sourceCode <- liftIO $ getSourceCode task

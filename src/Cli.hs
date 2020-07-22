@@ -1,4 +1,5 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Cli where
 
@@ -51,21 +52,11 @@ execCommand :: IO ()
 execCommand = do
   command <- execParser parseInfo
   run command
+    `catch` (\(e::StringException) -> putStrLn $ displayException e)
   where
     run cmd = case cmd of
-      Login        -> do
-        result <- runResult Login.login
-        handleErr result "Error: Login failed: "
-      New name     -> do 
-        result <- runResult (New.new name)
-        handleErr result "Error: Create project failed: "
-      Submit task  -> do
-        result <- runResult (Submit.submit task)
-        handleErr result "Error: Submit task failed: " 
-      ClearSession -> do
-        result <- runResult ClearSession.clearSession
-        handleErr result "Error: Clear session failed: "
+      Login        -> Login.login
+      New name     -> New.new name
+      Submit task  -> Submit.submit task
+      ClearSession -> ClearSession.clearSession
 
-handleErr :: Either Text () -> Text -> IO ()
-handleErr (Right _) _ = pure ()
-handleErr (Left e) prefix = putStrLn $ convert (prefix <> e)

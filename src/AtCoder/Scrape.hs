@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
 
 module AtCoder.Scrape (getCsrfToken, hasSuccess) where
 
@@ -8,13 +9,19 @@ import           Text.HTML.Scalpel              (AttributeName (..),
                                                  AttributePredicate, Selector,
                                                  TagName (..), URL, (@:), (@=))
 import qualified Text.HTML.Scalpel              as Scalpel
+import Cli.Result
 
 type Html = Text
 
+data ExternalException = ReadException deriving (Show)
+instance Exception ExternalException
+
 -- htmlのテキストからcsrf_tokenを取得する処理
-getCsrfToken :: Html -> Maybe Text
+getCsrfToken :: MonadThrow m => Html -> m Text
 getCsrfToken html =
-  Scalpel.scrapeStringLike html $ Scalpel.attr "value" selector
+  maybeToMonadThrow
+    "cannot find csrf_token"
+    (Scalpel.scrapeStringLike html $ Scalpel.attr "value" selector)
   where
     selector :: Selector
     selector =

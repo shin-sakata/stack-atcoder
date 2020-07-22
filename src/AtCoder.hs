@@ -3,12 +3,12 @@
 
 module AtCoder
   ( login,
-    Result,
     submit,
     clearSession,
   )
 where
 
+import Control.Monad.IO.Class (liftIO, MonadIO)
 import qualified AtCoder.HttpClient as HttpClient
 import qualified AtCoder.Scrape as Scrape
 import Cli.Result
@@ -33,18 +33,15 @@ type UserName = Text
 type Password = Text
 
 -- Login
-login :: UserName -> Password -> Result ()
+login :: (MonadThrow m, MonadIO m) => UserName -> Password -> m ()
 login userName password = do
-  clearSession
+  liftIO clearSession
   document <-
     liftIO $
       HttpClient.get
         loginEndpoint
 
-  csrfToken <-
-    maybeToResult
-      (Scrape.getCsrfToken document)
-      ("cannot find csrf_token. URL: " <> convert (show loginEndpoint))
+  csrfToken <- Scrape.getCsrfToken document
 
   let form =
         ReqBodyUrlEnc $
@@ -57,14 +54,14 @@ login userName password = do
   -- TODO サクセス以外は全てusernameとpasswordが違うというエラーを吐いているので修正すべき
   if Scrape.hasSuccess res
     then liftIO $ putStrLn "Login Success!!"
-    else throwError "Username or Password is incorrect."
+    else throwString "Username or Password is incorrect."
   where
     loginEndpoint :: Url 'Https
     loginEndpoint = endpoint /: "login"
 
 -- Logout
-clearSession :: Result ()
-clearSession = liftIO $ HttpClient.writeCookie mempty
+clearSession :: IO ()
+clearSession = HttpClient.writeCookie mempty
 
 -- Submit
 type ContestId = Text
@@ -76,7 +73,7 @@ type SourceCode = Text
 haskellLanguageId :: Text
 haskellLanguageId = "4027"
 
-submit :: ContestId -> TaskId -> SourceCode -> Result ()
+submit :: (MonadThrow m, MonadIO m) => ContestId -> TaskId -> SourceCode -> m ()
 submit contestId taskId sourceCode = do
   let taskScreenName = contestId <> "_" <> taskId
   let contestUrl = endpoint /: "contests" /: contestId /: "tasks" /: taskScreenName
@@ -85,10 +82,7 @@ submit contestId taskId sourceCode = do
       HttpClient.get
         contestUrl
 
-  csrfToken <-
-    maybeToResult
-      (Scrape.getCsrfToken document)
-      ("cannot find csrf_token. URL: " <> convert (show contestUrl))
+  csrfToken <- Scrape.getCsrfToken document
 
   let form =
         ReqBodyUrlEnc $
