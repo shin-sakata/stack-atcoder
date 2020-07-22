@@ -27,6 +27,7 @@ dependencies:
 - text
 - shakespeare
 - yaml
+- safe-exceptions
 
 library:
   source-dirs: src

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 2e328d7f3278cfb2dce3b702cff62cd24b6afba03b671197522a6c168c4cd1ff
+-- hash: df57ed4eb675a2d49ef8c46f2ceeb86f72a8b9914771a0faafe5f04109d81b41
 
 name:           stack-atcoder
 version:        0.1.0.0
@@ -51,6 +51,7 @@ library
     , mtl
     , optparse-applicative
     , req
+    , safe-exceptions
     , scalpel
     , shakespeare
     , text
@@ -75,6 +76,7 @@ executable stack-atcoder-exe
     , mtl
     , optparse-applicative
     , req
+    , safe-exceptions
     , scalpel
     , shakespeare
     , stack-atcoder
@@ -103,6 +105,7 @@ test-suite stack-atcoder-test
     , mtl
     , optparse-applicative
     , req
+    , safe-exceptions
     , scalpel
     , shakespeare
     , stack-atcoder

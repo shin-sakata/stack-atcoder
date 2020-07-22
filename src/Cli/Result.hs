@@ -5,6 +5,9 @@ import           Control.Monad.IO.Class  (MonadIO)
 import           Data.Either.Combinators (maybeToRight)
 import           Data.Text               as T
 
+import Control.Exception.Safe
+import Control.Arrow
+
 type Result a = E.ExceptT T.Text IO a
 
 runResult :: Result a -> IO (Either Text a)
@@ -21,3 +24,9 @@ eitherToResult = E.ExceptT . pure
 
 liftIO :: MonadIO m => IO a -> m a
 liftIO = E.liftIO
+
+maybeToMonadThrow :: (MonadThrow m, Exception e) => e -> Maybe a -> m a
+maybeToMonadThrow e = throw e `maybe` return
+
+eitherToMonadThrow :: (MonadThrow m, Exception e) => Either e a -> m a
+eitherToMonadThrow = throw ||| return
