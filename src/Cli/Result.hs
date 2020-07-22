@@ -1,12 +1,22 @@
-module Cli.Result where
+module Cli.Result
+  ( Result,
+    runResult,
+    throwError,
+    maybeToResult,
+    eitherToResult,
+    liftIO,
+    maybeToMonadThrow,
+    eitherToMonadThrow,
+    module Control.Exception.Safe
+  )
+where
 
-import qualified Control.Monad.Except    as E
-import           Control.Monad.IO.Class  (MonadIO)
-import           Data.Either.Combinators (maybeToRight)
-import           Data.Text               as T
-
-import Control.Exception.Safe
 import Control.Arrow
+import Control.Exception.Safe
+import qualified Control.Monad.Except as E
+import Control.Monad.IO.Class (MonadIO)
+import Data.Either.Combinators (maybeToRight)
+import Data.Text as T
 
 type Result a = E.ExceptT T.Text IO a
 
