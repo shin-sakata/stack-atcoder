@@ -4,9 +4,9 @@
 module Cli where
 
 import qualified Cli.ClearSession               as ClearSession
+import           Cli.Exceptions
 import qualified Cli.Login                      as Login
 import qualified Cli.New                        as New
-import           Cli.Result
 import qualified Cli.Submit                     as Submit
 import           Data.Convertible.Utf8          (convert)
 import           Data.Convertible.Utf8.Internal (Text)

@@ -2,14 +2,13 @@
 
 module Cli.New where
 
-import           Cli.Result
-import           Control.Monad.IO.Class (MonadIO, liftIO)
-import           Data.Convertible.Utf8  (convert)
-import           Data.Text              (Text)
+import           Cli.Exceptions
+import           Data.Convertible.Utf8 (convert)
+import           Data.Text             (Text)
 import qualified Settings
-import qualified Settings.Template      as Template
-import           System.FilePath        ((</>))
-import           Turtle                 (empty, shell)
+import qualified Settings.Template     as Template
+import           System.FilePath       ((</>))
+import           Turtle                (empty, shell)
 
 getHsfilesPath :: IO FilePath
 getHsfilesPath = do

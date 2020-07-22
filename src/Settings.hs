@@ -2,13 +2,12 @@
 
 module Settings where
 
-import           Cli.Result
-import           Control.Monad.IO.Class (MonadIO, liftIO)
-import           Data.Text              (Text)
-import qualified Data.Yaml              as Yaml
-import           GHC.Generics           (Generic)
-import           System.Directory       (getHomeDirectory)
-import           System.FilePath        ((</>))
+import           Cli.Exceptions
+import           Data.Text        (Text)
+import qualified Data.Yaml        as Yaml
+import           GHC.Generics     (Generic)
+import           System.Directory (getHomeDirectory)
+import           System.FilePath  ((</>))
 
 data Config = Config
   { dependencies :: [Text],

@@ -1,20 +1,18 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE OverloadedStrings   #-}
 
 module AtCoder.Scrape (getCsrfToken, hasSuccess) where
 
+import           Cli.Exceptions
 import           Data.Convertible.Utf8.Internal (Text)
 import           Data.Maybe                     (isJust)
 import           Text.HTML.Scalpel              (AttributeName (..),
                                                  AttributePredicate, Selector,
                                                  TagName (..), URL, (@:), (@=))
 import qualified Text.HTML.Scalpel              as Scalpel
-import Cli.Result
+
 
 type Html = Text
-
-data ExternalException = ReadException deriving (Show)
-instance Exception ExternalException
 
 -- htmlのテキストからcsrf_tokenを取得する処理
 getCsrfToken :: MonadThrow m => Html -> m Text

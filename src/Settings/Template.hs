@@ -1,13 +1,13 @@
-{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes       #-}
 
 module Settings.Template (atcoderTemplate) where
 
-import Data.Convertible.Utf8 (convert)
-import Data.Convertible.Utf8.Internal (LazyText, Text)
+import           Data.Convertible.Utf8          (convert)
+import           Data.Convertible.Utf8.Internal (LazyText, Text)
+import           Data.Text                      (intercalate)
 import qualified Settings
-import Text.Shakespeare.Text (stext)
-import Data.Text (intercalate)
+import           Text.Shakespeare.Text          (stext)
 
 dependencies :: Settings.Config -> Text
 dependencies config =

@@ -1,12 +1,11 @@
 module Cli.Login (login) where
 
 import qualified AtCoder
+import           Cli.Exceptions
 import           Data.Convertible.Utf8          (convert)
 import           Data.Convertible.Utf8.Internal (Text)
 import           System.IO                      (hFlush, hSetEcho, stdin,
                                                  stdout)
-import Control.Monad.IO.Class (MonadIO, liftIO)
-import Cli.Result
 
 login :: (MonadThrow m, MonadIO m) => m ()
 login = do

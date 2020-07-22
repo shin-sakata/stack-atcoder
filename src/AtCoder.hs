@@ -1,4 +1,4 @@
-{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE DataKinds         #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module AtCoder
@@ -8,21 +8,15 @@ module AtCoder
   )
 where
 
-import Control.Monad.IO.Class (liftIO, MonadIO)
-import qualified AtCoder.HttpClient as HttpClient
-import qualified AtCoder.Scrape as Scrape
-import Cli.Result
-import Data.Convertible.Utf8 (convert)
-import Data.Convertible.Utf8.Internal (Text)
-import Data.Either.Combinators (maybeToRight)
-import Network.HTTP.Req
-  ( ReqBodyUrlEnc (..),
-    Scheme (Https),
-    Url,
-    https,
-    (/:),
-    (=:),
-  )
+import qualified AtCoder.HttpClient             as HttpClient
+import qualified AtCoder.Scrape                 as Scrape
+import           Cli.Exceptions
+import           Data.Convertible.Utf8          (convert)
+import           Data.Convertible.Utf8.Internal (Text)
+import           Data.Either.Combinators        (maybeToRight)
+import           Network.HTTP.Req               (ReqBodyUrlEnc (..),
+                                                 Scheme (Https), Url, https,
+                                                 (/:), (=:))
 
 -- AtCoder endpoint
 endpoint :: Url 'Https

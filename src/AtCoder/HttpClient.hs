@@ -1,29 +1,23 @@
 {-# LANGUAGE AllowAmbiguousTypes #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings   #-}
 
 module AtCoder.HttpClient (get, postForm, writeCookie) where
 
-import Control.Monad.IO.Class (liftIO)
-import Data.Convertible.Utf8 (convert)
-import Data.Convertible.Utf8.Internal (LazyByteString, Text)
-import Data.Maybe (fromMaybe)
-import Data.Proxy (Proxy)
-import Network.HTTP.Client (CookieJar)
-import Network.HTTP.Req
-  ( GET (..),
-    HttpBody,
-    NoReqBody (..),
-    Option,
-    POST (..),
-    ReqBodyUrlEnc (..),
-    Url,
-    (=:),
-  )
-import qualified Network.HTTP.Req as Req
-import Text.Read (readMaybe)
-import Turtle (shell, empty)
-import Settings (getSettingsDir)
-import System.FilePath ((</>))
+import           Cli.Exceptions
+import           Data.Convertible.Utf8          (convert)
+import           Data.Convertible.Utf8.Internal (LazyByteString, Text)
+import           Data.Maybe                     (fromMaybe)
+import           Data.Proxy                     (Proxy)
+import           Network.HTTP.Client            (CookieJar)
+import           Network.HTTP.Req               (GET (..), HttpBody,
+                                                 NoReqBody (..), Option,
+                                                 POST (..), ReqBodyUrlEnc (..),
+                                                 Url, (=:))
+import qualified Network.HTTP.Req               as Req
+import           Settings                       (getSettingsDir)
+import           System.FilePath                ((</>))
+import           Text.Read                      (readMaybe)
+import           Turtle                         (empty, shell)
 
 type Form = [(Text, Text)]
 
