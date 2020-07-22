@@ -5,21 +5,20 @@ module Settings.Template (atcoderTemplate) where
 
 import           Data.Convertible.Utf8          (convert)
 import           Data.Convertible.Utf8.Internal (LazyText, Text)
-import           Data.Text                      (intercalate)
+import qualified Data.Text                      as T
 import qualified Settings
 import           Text.Shakespeare.Text          (stext)
 
 dependencies :: Settings.Config -> Text
 dependencies config =
-  intercalate "\n" (map (dependency . convert) (Settings.dependencies config))
+  T.intercalate "\n" (map (dependency . convert) (Settings.dependencies config))
   where
     dependency :: LazyText -> Text
     dependency depend =
       convert [stext|- #{depend}|]
 
 sourceTemplate :: Settings.Config -> Text -> Text
-sourceTemplate config task = convert [stext|
-{-# START_FILE #{task}/Main.hs #-}
+sourceTemplate config task = convert [stext|{-# START_FILE #{task}/Main.hs #-}
 #{template}
 |]
   where
@@ -27,72 +26,45 @@ sourceTemplate config task = convert [stext|
 
 sourceTemplates :: Settings.Config -> Text
 sourceTemplates config =
-  intercalate "\n" (map (sourceTemplate config) ["a", "b", "c", "d", "e", "f"])
+   T.concat (map (sourceTemplate config) ["a", "b", "c", "d", "e", "f"])
 
 atcoderTemplate :: Settings.Config -> Text
 atcoderTemplate config =
   convert
-    [stext|{-# START_FILE package.yaml #-}
+    [stext|#{packageYaml config}
+#{sourceTemplates config}
+#{stackYaml}
+|]
+
+packageYaml :: Settings.Config -> Text
+packageYaml config = convert
+  [stext|{-# START_FILE package.yaml #-}
 name:                {{name}}
 version:             0.1.0.0
 
 dependencies:
-#{dependencies_}
+#{dependencies config}
 
-#{rest}
-
-#{sourceTemplates_}
-|]
-  where
-    dependencies_ = dependencies config
-    sourceTemplates_ = sourceTemplates config
-
-rest = [stext|
 executables:
-  a:
-    main:                Main.hs
-    source-dirs:         a
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-  b:
-    main:                Main.hs
-    source-dirs:         b
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-  c:
-    main:                Main.hs
-    source-dirs:         c
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-  d:
-    main:                Main.hs
-    source-dirs:         d
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-  e:
-    main:                Main.hs
-    source-dirs:         e
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
-  f:
-    main:                Main.hs
-    source-dirs:         f
-    ghc-options:
-      - -threaded
-      - -rtsopts
-      - -with-rtsopts=-N
+#{executables config}
+|]
 
-{-# START_FILE stack.yaml #-}
+executables :: Settings.Config -> Text
+executables config =
+  T.concat (map executable ["a", "b", "c", "d", "e", "f"])
+
+executable :: Text -> Text
+executable task = convert [stext|  #{task}:
+    main:                Main.hs
+    source-dirs:         #{task}
+    ghc-options:
+      - -threaded
+      - -rtsopts
+      - -with-rtsopts=-N
+|]
+
+stackYaml :: Text
+stackYaml = convert [stext|{-# START_FILE stack.yaml #-}
 resolver: lts-15.7
 packages:
 - .

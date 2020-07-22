@@ -59,4 +59,3 @@ execCommand = do
       New name     -> New.new name
       Submit task  -> Submit.submit task
       ClearSession -> ClearSession.clearSession
-
